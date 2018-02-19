@@ -147,7 +147,8 @@
     <ClCompile Include="NeuralNetworkCPP.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="MatrixMath.h" />
+    <ClInclude Include="NeuralNetMath.h" />
+    <ClInclude Include="NeuralNetwork.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
