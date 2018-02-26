@@ -15,7 +15,7 @@ public:
 };
 
 //Artificial Neural Network Class Itself
-//Capable of 0,1,2 Hidden Layers via Constructor Overloads
+//Single Layer, Input -> Output
 class NeuralNetwork
 {
 public:
@@ -29,46 +29,6 @@ public:
 		//Set ANN to Single Layer Mode (0-Hidden Layers)
 		numberOfLayers = 1;
 		layers.push_back(featureLayer);
-	}
-	NeuralNetwork(const int features, const int layerSize, const int signatures) //1-Hidden Layer ANN
-	{
-		//Setup Input Layer
-		Layer& featureLayer = *(new Layer());
-		featureLayer.inputSize = features;
-		featureLayer.outputSize = layerSize;
-		ResetLayer(featureLayer);
-		//Setup Hidden Layer
-		Layer& hiddenLayer = *(new Layer());
-		hiddenLayer.inputSize = layerSize;
-		hiddenLayer.outputSize = signatures;
-		ResetLayer(featureLayer);
-		//Setup ANN to Two Layer Mode (1-Hidden Layer)
-		numberOfLayers = 2;
-		layers.push_back(featureLayer);
-		layers.push_back(hiddenLayer);
-	}
-	NeuralNetwork(const int features, const int layerSizeA, const int layerSizeB, const int signatures) //2-Hidden Layer ANN
-	{
-		//Setup Input Layer
-		Layer& featureLayer = *(new Layer());
-		featureLayer.inputSize = features;
-		featureLayer.outputSize = layerSizeA;
-		ResetLayer(featureLayer);
-		//Setup Hidden LayerA
-		Layer& hiddenLayerA = *(new Layer());
-		hiddenLayerA.inputSize = layerSizeA;
-		hiddenLayerA.outputSize = layerSizeB;
-		ResetLayer(hiddenLayerA);
-		//Setup Hidden LayerB
-		Layer& hiddenLayerB = *(new Layer());
-		hiddenLayerB.inputSize = layerSizeB;
-		hiddenLayerB.outputSize = signatures;
-		ResetLayer(hiddenLayerB);
-		//Setup ANN to Three Layer Mode (2-Hidden Layers)
-		numberOfLayers = 3;
-		layers.push_back(featureLayer);
-		layers.push_back(hiddenLayerA);
-		layers.push_back(hiddenLayerB);
 	}
 	vector<float> MakePrediction(vector<float> featureData)
 	{
@@ -90,11 +50,7 @@ public:
 		//Calculate Delta Error using Derivative Sigmoid Function
 		vector<float> deltaError = Vector_Multiply(error, Vector_Sigmoid_Derivative(prediction));
 		//Calculate Weight Delta by Taking Dot Product of FeatureData with DeltaError
-		
-		//Apply Backpropagation and Apply Weight Changes
-
-		//...
-
+		vector<float> deltaWeights = Vector_Multiply(deltaError, featureData);
 		//Return Prediction to Show Improvement
 		return prediction;
 	}

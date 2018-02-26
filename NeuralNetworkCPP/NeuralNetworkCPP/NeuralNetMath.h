@@ -58,6 +58,19 @@ vector<float> Vector_Multiply(vector<float> sourceVector, vector<float> mulVecto
 	//Return Product Vector as Output
 	return outputVector;
 }
+//Vector Scale
+vector<float> Vector_Scale(vector<float> sourceVector, int scalar)
+{
+	//Create Vector to Return as Output
+	vector<float> outputVector;
+	//Iterate Through Vector, Scaling Values
+	for (int v = 0; v < sourceVector.size(); v++)
+	{
+		outputVector.push_back(sourceVector[v] * scalar);
+	}
+	//Return Product Vector as Output
+	return outputVector;
+}
 
 //Sigmoid: (X / 1 + abs(x)) + 1 --> {0.0f to 2.0f}
 inline float Sigmoid(float val)
