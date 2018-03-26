@@ -1,2 +1,3 @@
 ﻿  NeuralNetworkC.c
+c:\repositories\machinelearning\neuralnetworkc\neuralnetworkc\neuralnetworkc\neuralnetworkc.c(10): warning C4244: 'function': conversion from 'time_t' to 'unsigned int', possible loss of data
   NeuralNetworkC.vcxproj -> C:\Repositories\MachineLearning\NeuralNetworkC\NeuralNetworkC\Debug\NeuralNetworkC.exe

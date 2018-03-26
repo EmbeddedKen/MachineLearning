@@ -5,7 +5,7 @@
 //Defines and Macros
 #define INPUT_SIZE 4
 #define OUTPUT_SIZE 2
-#define ABS(val) ((val >= 0) ? val : -val)
+#define ABSOLUTE(val) ((val >= 0) ? val : -val)
 #define SIGN(val) ((val == 0) ? 0 : (val > 0) ? 1 : -1)
 
 //Artificial Neural Network Structures
@@ -56,12 +56,12 @@ ANN_Initialize(ANN* aNN, float learnRate)
 	//New Artificial Neural Network
 	aNN->iterations = aNN->iterSum = 0;
 	aNN->learningRate = learnRate;
-	//Initialize Weights to 0.5f
+	//Initialize Weights
 	for (int o = 0; o < OUTPUT_SIZE; o++)
 	{
 		for (int i = 0; i < INPUT_SIZE; i++)
 		{
-			aNN->weights.val[o][i] = 0.5f;
+			aNN->weights.val[o][i] = 0.25f;
 		}
 	}
 }
@@ -80,7 +80,7 @@ Output1D Output1D_Cost(Output1D* prediction, Output1D* target)
 	return output;
 }
 
-//Sigmoid: (X / 1 + abs(x)) --> {-1.0f to 1.0f}
+//Sigmoid: (X / 1 + ABSOLUTE(x)) --> {-1.0f to 1.0f}
 Output1D Output1D_Sigmoid(Output1D* prediction)
 {
 	//Create Return Output Struct
@@ -90,12 +90,12 @@ Output1D Output1D_Sigmoid(Output1D* prediction)
 	{
 		//Calculate Sigmoid for Each Iteration
 		float val = prediction->val[o];
-		output.val[o] = (val / (1 + ABS(val)));;
+		output.val[o] = (val / (1 + ABSOLUTE(val)));
 	}
 	return output;
 }
 
-//Sigmoid Derivative: (1-((1/abs(x)+1) - (x * sign(x)/ (abs(x) + 1)^2))
+//Sigmoid Derivative: (1 / ((1 + ABSOLUTE(val)) * (1 + ABSOLUTE(val))))
 Output1D Output1D_SigmoidDeriv(Output1D* error)
 {
 	//Create Output Struct
@@ -103,8 +103,8 @@ Output1D Output1D_SigmoidDeriv(Output1D* error)
 	for (int o = 0; o < OUTPUT_SIZE; o++)
 	{
 		float val = error->val[o];
-		float absVal = ABS(val);
-		output.val[o] = 1 - (1 / (absVal + 1)) - ((val * SIGN(val)) / ((absVal + 1) * (absVal + 1)));
+		float absVal = ABSOLUTE(val);
+		output.val[o] = 1 / ((1 + ABSOLUTE(val)) * (1 + ABSOLUTE(val)));
 	}
 	//Return Output
 	return output;
@@ -138,21 +138,24 @@ Output1D ANN_Learn(ANN* aNN, Input1D* input, Output1D* target)
 	printf("[Neuron Inputs]---------------------------------------\n");
 	DisplayInput1D(input);
 
+
 	//Make a Prediction Based on Input Data
-	Output1D prediction = ANN_MakePrediction(aNN, input);
+	Output1D rawPrediction = ANN_MakePrediction(aNN, input);
 	printf("[Prediction Prior to Sigmoid]-------------------------\n");
-	DisplayOutput1D(&prediction);
-	prediction = Output1D_Sigmoid(&prediction);
+	DisplayOutput1D(&rawPrediction);
+	Output1D prediction = Output1D_Sigmoid(&rawPrediction);
 	printf("[Prediction Filtered with Sigmoid]--------------------\n");
 	DisplayOutput1D(&prediction);
+	printf("[Target for Output]-----------------------------------\n");
+	DisplayOutput1D(target);  
 
 	//Determine Error Between Output and Target (Cost Func)
-	Output1D error = Output1D_Cost(&prediction, target);
-	Output1D error_deriv = Output1D_SigmoidDeriv(&error);
+	Output1D error = Output1D_Cost(&rawPrediction, target);
+	Output1D sig_deriv = Output1D_SigmoidDeriv(&rawPrediction);
 	printf("[Cost of Prediction]----------------------------------\n");
 	DisplayOutput1D(&error);
-	printf("[Sigmoid Deriviative of Cost]-------------------------\n");
-	DisplayOutput1D(&error_deriv);
+	printf("[Sigmoid Deriviative of Weighted Input]---------------\n");
+	DisplayOutput1D(&sig_deriv);
 
 	//Calculate Delta Weight Changes
 	Weights2D deltaWeights;
@@ -160,7 +163,7 @@ Output1D ANN_Learn(ANN* aNN, Input1D* input, Output1D* target)
 	{
 		for (int i = 0; i < INPUT_SIZE; i++)
 		{
-			deltaWeights.val[o][i] = aNN->learningRate * input->val[i] * error_deriv.val[o] * SIGN(error.val[0]);
+			deltaWeights.val[o][i] = aNN->learningRate * (target->val[o] - rawPrediction.val[o]) * sig_deriv.val[o] * input->val[i];
 		}
 	}
 	printf("[Delta Weights, Weight Changes]-----------------------\n");
