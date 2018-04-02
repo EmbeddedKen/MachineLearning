@@ -4,7 +4,7 @@
 
 //Defines and Macros
 #define INPUT_SIZE 4
-#define OUTPUT_SIZE 2
+#define OUTPUT_SIZE 3
 #define ABSOLUTE(val) ((val >= 0) ? val : -val)
 #define SIGN(val) ((val == 0) ? 0 : (val > 0) ? 1 : -1)
 
