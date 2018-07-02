@@ -1,0 +1,39 @@
+conversations:
+- - go back
+  - Return to parent directory?
+- - go up
+  - Return to parent directory?
+- - parent directory
+  - Return to parent directory?
+- - launch
+  - Run?
+- - execute
+  - Run?
+- - run
+  - Run?
+- - list files
+  - List files in this directory?
+- - show files
+  - List files in this directory?
+- - move
+  - Move file?
+- - copy
+  - Copy file?
+- - open folder
+  - Open folder?
+- - open directory
+  - Open folder?
+- - Where am I
+  - Show Current Directory? 
+- - current directory
+  - Show Current Directory?
+- - path
+  - Show Environment Path?
+- - return value
+  - Show Last Return Value?
+- - help
+  - Show Help?
+- - clear screen
+  - Clear Screen?
+- - go home
+  - Go Home?
