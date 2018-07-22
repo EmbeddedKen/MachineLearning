@@ -100,6 +100,20 @@ namespace SmartShell
             messageQueue.Enqueue(e.Data);
         }
 
+        private void btnCurrentDir_Click(object sender, EventArgs e) { cmd.StandardInput.WriteLine("echo %CD%"); }
+
+        private void btnRet_Click(object sender, EventArgs e) { cmd.StandardInput.WriteLine("echo %ERRORLEVEL%"); }
+
+        private void btnIP_Click(object sender, EventArgs e) { cmd.StandardInput.WriteLine("ipconfig"); }
+
+        private void btnHelp_Click(object sender, EventArgs e) { cmd.StandardInput.WriteLine("help"); }
+
+        private void btnBack_Click(object sender, EventArgs e) { cmd.StandardInput.WriteLine("cd .."); }
+
+        private void btnSys_Click(object sender, EventArgs e) { cmd.StandardInput.WriteLine("systeminfo"); }
+
+        private void btnCls_Click(object sender, EventArgs e) { OutputBox.Clear(); }
+
         private void Timer_Tick(object sender, EventArgs e)
         {
             //Check if Python Bot Ready, Enable OutputBox
